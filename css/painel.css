@@ -1,0 +1,20 @@
+/* css/painel.css */
+
+body {
+    background-color: #1a1a1d; /* Cor de fundo escura de fallback */
+    background-image: linear-gradient(to right top, #232526, #2c2e30, #36373a, #404144, #4a4b4e);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f0f0f0;
+}
+
+/* Barra de navegação com efeito de vidro */
+.navbar-glass {
+    background: rgba(30, 30, 30, 0.65);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-brand, .navbar-text {
+    color: #e9ecef !important; /* Cor do texto clara */
+}

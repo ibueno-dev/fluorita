@@ -1,0 +1,57 @@
+/* css/produtos.css */
+
+/* Reutiliza o fundo escuro do tema */
+body {
+    background-color: #1a1a1d;
+    background-image: linear-gradient(to right top, #232526, #2c2e30, #36373a, #404144, #4a4b4e);
+    color: #f0f0f0;
+}
+
+/* Estilo para o card do produto */
+.product-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px solid #ffd166; /* Borda amarelada como na imagem */
+    border-radius: 1rem;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    color: #f0f0f0;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(255, 209, 102, 0.2);
+}
+
+.product-card .card-img-top {
+    border-top-left-radius: calc(1rem - 2px);
+    border-top-right-radius: calc(1rem - 2px);
+    aspect-ratio: 1 / 1; /* Garante que a imagem seja sempre um quadrado */
+    object-fit: contain; /* ajusta a imagem para o quadro */
+}
+
+.product-card .card-title {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.product-card .product-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #ffd166; /* Preço com a mesma cor da borda */
+}
+
+.product-card .card-text {
+    color: #adb5bd; /* Descrição com uma cor mais suave */
+}
+
+/* Estilo para o Modal (popup da imagem) */
+.modal-content {
+    background-color: transparent;
+    border: none;
+}
+.modal-header {
+    border-bottom: none;
+}
+.btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}

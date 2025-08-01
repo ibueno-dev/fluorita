@@ -1,0 +1,102 @@
+/* Definindo o corpo da página */
+body {
+    background-color: #1a1a1d; /* Cor de fundo escura de fallback */
+    background-image: linear-gradient(to right top, #232526, #2c2e30, #36373a, #404144, #4a4b4e);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f0f0f0;
+}
+
+/* O card de login centralizado */
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 3rem 2.5rem;
+    
+    /* Efeito de Vidro Fosco */
+    background: rgba(30, 30, 30, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* Para compatibilidade com Safari */
+    
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Ajustes nos ícones e inputs usando input-group do Bootstrap */
+.input-group-text {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: none;
+    border-radius: 0.75rem 0 0 0.75rem;
+    color: #adb5bd;
+}
+
+.form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: none;
+    border-radius: 0 0.75rem 0.75rem 0;
+    color: #ffffff;
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    outline: 0;
+    box-shadow: none; /* Remove o brilho azul padrão do Bootstrap */
+}
+
+/* Placeholder (texto dentro do campo) */
+.form-control::placeholder {
+    color: #adb5bd;
+    opacity: 1; 
+}
+
+/* Estilo do botão de login principal */
+.btn-login {
+    background-color: #e9ecef; /* Cor clara, como na imagem */
+    color: #212529; /* Cor do texto escura */
+    font-weight: bold;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.75rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-login:hover {
+    background-color: #ced4da; /* Um pouco mais escuro ao passar o mouse */
+    color: #212529;
+}
+
+/* Opções extras abaixo do botão */
+.extra-options {
+    font-size: 0.9rem;
+    color: #adb5bd;
+}
+
+.form-check-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.form-check-input:checked {
+    background-color: #e9ecef;
+    border-color: #e9ecef;
+}
+
+.forgot-password {
+    color: #adb5bd;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Estilos para os alertas de sucesso/erro */
+.alert {
+    border-radius: 0.75rem;
+}

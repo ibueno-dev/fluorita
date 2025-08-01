@@ -1,0 +1,46 @@
+# Arquivos de log e de sistema operacional
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos temporários de editores de texto (comuns no Linux)
+*~
+*.swp
+*.swo
+
+# Dependências e arquivos de configuração do PHP (Composer)
+# A pasta vendor contém todos os pacotes baixados e nunca deve ser enviada.
+/vendor/
+composer.phar
+
+# Arquivos de ambiente (.env)
+# Contêm senhas, chaves de API e outras informações sensíveis.
+# O arquivo .env.example, que é um modelo, NÃO é ignorado e deve ser enviado.
+.env
+.env.*
+!.env.example
+
+# Pastas de uploads gerados pela aplicação
+# Imagens originais que os usuários enviam não devem fazer parte do código-fonte.
+/uploads_privados/
+
+# Arquivos de Dump do MySQL
+# Backups de banco de dados podem ser grandes e conter dados sensíveis.
+# Nota: Se você tiver um arquivo de schema, como 'schema.sql', que DEVE ser versionado,
+# adicione uma exceção para ele com a linha: !schema.sql
+*.sql
+*.dump
+*.sql.gz
+
+# Configurações do Visual Studio Code
+# A pasta .vscode contém configurações do seu workspace pessoal (tasks, launch configs)
+# que não devem ser compartilhadas com outros desenvolvedores.
+.vscode/
+
+# Arquivos de cache e de IDEs comuns
+.idea/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
