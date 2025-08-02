@@ -26,6 +26,10 @@
         </div>
     </main>
     
+    <script>
+        // Esta variável global informa ao JS qual é o caminho raiz do projeto
+        const BASE_URL = '<?php echo rtrim(dirname($_SERVER['PHP_SELF']), '/') . '/'; ?>';
+    </script>
     <script src="js/background_slider.js"></script>
 
 </body>
