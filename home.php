@@ -21,8 +21,8 @@
 
     <main class="hero-content">
         <div class="container text-center">
-            <h2 class="hero-title-cursive">Feliciano</h2>
-            <h1 class="hero-title-main">NUTRITIOUS & TASTY</h1>
+            <h2 class="hero-title-cursive">Fluorita</h2>
+            <h1 class="hero-title-main">LANCHES & Doces</h1>
         </div>
     </main>
     
