@@ -51,14 +51,14 @@ body, html {
     color: white;
 }
 
-/* Estilo para o texto "Feliciano" */
+/* Estilo para o texto "Fluorita" */
 .hero-title-cursive {
     font-family: 'Great Vibes', cursive;
     font-size: 4rem;
     color: #c8a97e; /* Cor dourada/bege */
 }
 
-/* Estilo para o texto "NUTRITIOUS & TASTY" */
+/* Estilo para o texto "Burguer & Doces" */
 .hero-title-main {
     font-family: 'Poppins', sans-serif;
     font-size: 5rem;
