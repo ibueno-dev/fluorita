@@ -20,9 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const bg1 = document.getElementById('bg-1');
     const bg2 = document.getElementById('bg-2');
-    
     // Constrói o caminho completo para as imagens
-    const caminhosCompletos = imagens.map(img => `../imagens_publicas/backgrounds/${img}`);
+    // Usa a variável global BASE_URL que definimos no PHP
+    const caminhosCompletos = imagens.map(img => `${BASE_URL}imagens_publicas/backgrounds/${img}`);
+
     
     let imagemAtualIndex = 0;
     let qualDivEstaAtiva = 1; // 1 ou 2
