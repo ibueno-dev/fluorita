@@ -1,0 +1,68 @@
+/* Define o corpo para ocupar toda a tela sem margens */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Evita barras de rolagem */
+}
+
+/* Container principal para o slider de fundo */
+.background-slider {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Coloca o fundo atrás de todo o conteúdo */
+}
+
+/* Estilo para as duas divs de imagem de fundo */
+.background-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    /* Efeito de transição suave (fade) */
+    transition: opacity 1.5s ease-in-out;
+}
+
+/* Sobreposição escura para melhorar a legibilidade do texto */
+.background-slider::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Cor preta com 50% de opacidade */
+    z-index: -1;
+}
+
+/* Container para o conteúdo principal, centralizado */
+.hero-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white;
+}
+
+/* Estilo para o texto "Feliciano" */
+.hero-title-cursive {
+    font-family: 'Great Vibes', cursive;
+    font-size: 4rem;
+    color: #c8a97e; /* Cor dourada/bege */
+}
+
+/* Estilo para o texto "NUTRITIOUS & TASTY" */
+.hero-title-main {
+    font-family: 'Poppins', sans-serif;
+    font-size: 5rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
