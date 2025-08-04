@@ -5,5 +5,5 @@ session_start();
 $_SESSION = array();
 session_destroy();
 // Caminho atualizado para o login na raiz
-header('Location: login.php');
+header('Location: home.php');
 exit;
