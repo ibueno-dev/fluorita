@@ -1,0 +1,37 @@
+/* css/painel_tabela.css */
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.table-dark {
+    --bs-table-bg: #212529;
+    --bs-table-border-color: #454d55;
+}
+
+.thumb-preview {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.thumb-preview:hover {
+    transform: scale(1.1);
+}
+
+/* Esconde os inputs no modo de visualização */
+.view-mode .form-control, .view-mode .form-check-input { display: none; }
+.view-mode .btn-salvar, .view-mode .btn-cancelar { display: none; }
+
+/* Esconde os spans e botões no modo de edição */
+.edit-mode .data-span { display: none; }
+.edit-mode .btn-editar, .edit-mode .btn-deletar { display: none; }
+
+/* Mostra os elementos corretos para o modo de edição */
+.edit-mode .form-control, .edit-mode .form-check-input { display: inline-block; }
+.edit-mode .btn-salvar, .edit-mode .btn-cancelar { display: inline-block; }
+
+.form-control-sm.inline-edit {
+    max-width: 150px;
+}
