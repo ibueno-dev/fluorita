@@ -8,7 +8,7 @@ session_start();
 
 if (!isset($_SESSION['usuario_id'])) {
     // Redireciona para o login na pasta raiz
-    header('Location: ../login.php');
+    header('Location: ../home.php');
     exit;
 }
 
