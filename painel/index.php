@@ -39,6 +39,7 @@ $email_do_usuario = htmlspecialchars($_SESSION['usuario_email']);
 
     <div class="container mt-4">
         <a href="produtos_cadastrar.php" class="btn btn-success">Cadastrar Novo Produto</a>
+        <a href="produtos_listar.php" class="btn btn-success">Gerenciamento dos Produtos</a>
     </div>
 
 </body>
