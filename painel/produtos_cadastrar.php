@@ -1,10 +1,7 @@
 <?php
-// includes/auth_check.php - Nosso novo verificador de segurança
-// Ele garante que só usuários logados vejam esta página.
-
-// Correção: Usando dirname(__DIR__) para subir um nível e encontrar a pasta includes.
+// A única inclusão necessária é o nosso verificador de segurança.
+// Ele já inicia a sessão e protege a página.
 require_once dirname(__DIR__) . '/includes/auth_check.php';
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -15,7 +12,7 @@ require_once dirname(__DIR__) . '/includes/auth_check.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/painel.css"> </head>
 <body>
-    <?php include 'components/navbar.php'; // Vamos criar um navbar reutilizável ?>
+    <?php include 'components/navbar.php'; ?>
 
     <div class="container mt-4">
         <div class="card bg-dark text-white border-secondary">
@@ -38,17 +35,19 @@ require_once dirname(__DIR__) . '/includes/auth_check.php';
                     </div>
                     <div class="mb-3">
                         <label for="imagem" class="form-label">Imagem do Produto</label>
-                        <input type="file" class="form-control" id="imagem" name="imagem" accept="image/jpeg, image/png, image/webp" required>
+                        <input type="file" class="form-control" id="imagem" name="imagem" accept="image/jpeg, image/png, image/webp">
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="disponivel" name="disponivel" value="1" checked>
                         <label class="form-check-label" for="disponivel">Produto Disponível</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Cadastrar Produto</button>
-                    <a href="index.php" class="btn btn-secondary">Cancelar</a>
+                    <a href="produtos_listar.php" class="btn btn-secondary">Cancelar</a>
                 </form>
             </div>
         </div>
     </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
