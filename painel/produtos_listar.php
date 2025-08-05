@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="../css/painel_tabela.css">
 </head>
 <body>
-    <?php // Você pode incluir um navbar aqui: include 'components/navbar.php'; ?>
+    <?php include 'components/navbar.php'; // Vamos criar um navbar reutilizável ?>
+    
     <div class="container-fluid mt-4">
         <h2>Gerenciamento de Produtos</h2>
         <div class="card bg-dark text-white border-secondary">
