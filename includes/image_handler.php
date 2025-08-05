@@ -67,7 +67,7 @@ function salvarImagem(array $arquivo_upload)
 
         $img_redimensionada = imagecreatetruecolor($largura_max, $altura_max);
 
-        if ($imagem && imagecolortotal($imagem) == 0) { // Preserva transparência do PNG
+        if ($imagem && imagecolorstotal($imagem) == 0) { // Preserva transparência do PNG
             imagealphablending($img_redimensionada, false);
             imagesavealpha($img_redimensionada, true);
         }
