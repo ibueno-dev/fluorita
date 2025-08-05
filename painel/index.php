@@ -24,18 +24,8 @@ $email_do_usuario = htmlspecialchars($_SESSION['usuario_email']);
     <link rel="stylesheet" href="../css/painel.css">
 </head>
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-glass">
-        <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">Bem-vindo ao seu Painel!</span>
-            <div class="d-flex align-items-center">
-                <span class="navbar-text me-3">
-                    Logado como: <?php echo $email_do_usuario; ?>
-                </span>
-                <a href="../logout.php" class="btn btn-outline-danger">Sair</a>
-            </div>
-        </div>
-    </nav>
+    
+    <?php include 'components/navbar.php'; ?>
 
     <div class="container mt-4">
         <a href="produtos_cadastrar.php" class="btn btn-success">Cadastrar Novo Produto</a>
