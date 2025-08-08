@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${produto.id}</td>
                 <td><img src="../${produto.imagem_thumb_url}" alt="${produto.nome}" class="thumb-preview" title="Clique para alterar"></td>
                 <td><span class="data-span">${produto.nome}</span><input type="text" class="form-control" value="${produto.nome}"></td>
-                <td><span class="data-span">${produto.nome_categoria || 'N/A'}</span></td>
+                <td><span class="data-span data-categoria">${produto.nome_categoria || 'N/A'}</span></td>
                 <td><span class="data-span">R$ ${parseFloat(produto.preco).toFixed(2)}</span><input type="number" step="0.01" class="form-control" value="${produto.preco}"></td>
                 <td><span class="data-span">${produto.disponivel == 1 ? 'Sim' : 'Não'}</span><input type="checkbox" class="form-check-input" ${produto.disponivel == 1 ? 'checked' : ''}></td>
                 <td class="text-end">
