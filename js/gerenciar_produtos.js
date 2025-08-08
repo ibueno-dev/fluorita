@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         produtos.forEach(produto => {
             const tr = document.createElement('tr');
             tr.dataset.id = produto.id;
-            tr.classList.add('view-mode');
+            tr.classList.add('view-mode'); //aqui esta engasgando
             tr.innerHTML = `
                 <td>${produto.id}</td>
                 <td><img src="../${produto.imagem_thumb_url}" alt="${produto.nome}" class="thumb-preview" title="Clique para alterar"></td>
