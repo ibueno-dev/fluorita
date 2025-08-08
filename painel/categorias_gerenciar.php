@@ -87,12 +87,17 @@ try {
                                     <tr><td colspan="3" class="text-center">Nenhuma categoria cadastrada.</td></tr>
                                 <?php else: ?>
                                     <?php foreach ($categorias as $categoria): ?>
-                                    <tr>
+                                    <tr data-id="<?php echo $categoria['id']; ?>">
                                         <td><?php echo $categoria['id']; ?></td>
-                                        <td><?php echo htmlspecialchars($categoria['nome']); ?></td>
+                                        <td>
+                                            <span class="nome-categoria"><?php echo htmlspecialchars($categoria['nome']); ?></span>
+                                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($categoria['nome']); ?>" style="display: none;">
+                                        </td>
                                         <td class="text-end">
-                                            <a href="#" class="btn btn-sm btn-warning disabled">Editar</a>
-                                            <a href="#" class="btn btn-sm btn-danger disabled">Excluir</a>
+                                            <button class="btn btn-sm btn-warning btn-editar">Editar</button>
+                                            <button class="btn btn-sm btn-danger btn-deletar">Excluir</button>
+                                            <button class="btn btn-sm btn-success btn-salvar" style="display: none;">Salvar</button>
+                                            <button class="btn btn-sm btn-secondary btn-cancelar" style="display: none;">Cancelar</button>
                                         </td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -104,7 +109,7 @@ try {
             </div>
         </div>
     </main>
-
+    <script src="../js/gerenciar_categorias.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
