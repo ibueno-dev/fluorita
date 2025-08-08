@@ -11,13 +11,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') { die(json_encode(['sucesso' => false
 
 $id = $_POST['id'];
 $nome = $_POST['nome'];
+$id_categoria = $_POST['id_categoria']; // <-- NOVO
 $preco = $_POST['preco'];
 $disponivel = isset($_POST['disponivel']) ? 1 : 0;
 $imagem_antiga = $_POST['imagem_antiga'];
 
-$sql_parts = ["nome = ?", "preco = ?", "disponivel = ?"];
-$params = [$nome, $preco, $disponivel];
-$types = "sdi";
+$sql_parts = ["nome = ?", "id_categoria = ?", "preco = ?", "disponivel = ?"];
+$params = [$nome, $id_categoria, $preco, $disponivel];
+$types = "sidi"; // s, i (para id_categoria), d, i
 
 // Verifica se uma nova imagem foi enviada
 if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
