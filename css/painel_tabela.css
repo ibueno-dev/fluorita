@@ -24,7 +24,7 @@
 
 /* MODO DE VISUALIZAÇÃO: Esconde todos os campos de formulário e botões de ação de edição */
 .view-mode .form-control,
-.view-mode .form-select, /* <-- REGRA ADICIONADA */
+.view-mode .form-select,      /* <-- Esta é a regra crucial que corrige o problema */
 .view-mode .form-check-input {
     display: none;
 }
@@ -48,7 +48,7 @@
 
 /* MODO DE EDIÇÃO: Mostra os campos de formulário e os botões de ação corretos */
 .edit-mode .form-control,
-.edit-mode .form-select, /* <-- REGRA ADICIONADA */
+.edit-mode .form-select,      /* <-- Esta é a regra para mostrar no modo de edição */
 .edit-mode .form-check-input {
     display: inline-block;
 }

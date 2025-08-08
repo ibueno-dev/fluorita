@@ -64,11 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const tr = document.createElement('tr');
             tr.dataset.id = produto.id;
             tr.classList.add('view-mode');
+            
+            // --- CORREÇÃO: REMOVIDO o "style='display: none;'" dos botões ---
             tr.innerHTML = `
                 <td>${produto.id}</td>
                 <td>
                     <img src="../${produto.imagem_thumb_url}" alt="${produto.nome}" class="thumb-preview" title="Clique para alterar a imagem">
-                    <input type="file" class="form-control form-control-sm" style="display: none;" accept="image/*">
+                    <input type="file" class="form-control form-control-sm" accept="image/*">
                 </td>
                 <td>
                     <span class="data-span data-nome">${produto.nome}</span>
@@ -89,14 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td class="text-end">
                     <button class="btn btn-primary btn-sm btn-editar">Editar</button>
                     <button class="btn btn-danger btn-sm btn-deletar">Deletar</button>
-                    <button class="btn btn-success btn-sm btn-salvar" style="display: none;">Salvar</button>
-                    <button class="btn btn-secondary btn-sm btn-cancelar" style="display: none;">Cancelar</button>
+                    <button class="btn btn-success btn-sm btn-salvar">Salvar</button>
+                    <button class="btn btn-secondary btn-sm btn-cancelar">Cancelar</button>
                 </td>`;
             
             tr.querySelector('select').value = produto.id_categoria;
             tabelaCorpo.appendChild(tr);
         });
-    };
+    };  
 
     /**
      * Cria os botões de navegação da paginação.
