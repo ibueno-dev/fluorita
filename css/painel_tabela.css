@@ -20,18 +20,40 @@
     transform: scale(1.1);
 }
 
-/* Esconde os inputs no modo de visualização */
-.view-mode .form-control, .view-mode .form-check-input { display: none; }
-.view-mode .btn-salvar, .view-mode .btn-cancelar { display: none; }
+/* --- CONTROLE DE VISIBILIDADE --- */
 
-/* Esconde os spans e botões no modo de edição */
-.edit-mode .data-span { display: none; }
-.edit-mode .btn-editar, .edit-mode .btn-deletar { display: none; }
+/* MODO DE VISUALIZAÇÃO: Esconde todos os campos de formulário e botões de ação de edição */
+.view-mode .form-control,
+.view-mode .form-select, /* <-- REGRA ADICIONADA */
+.view-mode .form-check-input {
+    display: none;
+}
 
-/* Mostra os elementos corretos para o modo de edição */
-.edit-mode .form-control, .edit-mode .form-check-input { display: inline-block; }
-.edit-mode .btn-salvar, .edit-mode .btn-cancelar { display: inline-block; }
+.view-mode .btn-salvar,
+.view-mode .btn-cancelar {
+    display: none;
+}
 
-.form-control-sm.inline-edit {
-    max-width: 150px;
+
+/* MODO DE EDIÇÃO: Esconde os textos e botões de ação de visualização */
+.edit-mode .data-span {
+    display: none;
+}
+
+.edit-mode .btn-editar,
+.edit-mode .btn-deletar {
+    display: none;
+}
+
+
+/* MODO DE EDIÇÃO: Mostra os campos de formulário e os botões de ação corretos */
+.edit-mode .form-control,
+.edit-mode .form-select, /* <-- REGRA ADICIONADA */
+.edit-mode .form-check-input {
+    display: inline-block;
+}
+
+.edit-mode .btn-salvar,
+.edit-mode .btn-cancelar {
+    display: inline-block;
 }

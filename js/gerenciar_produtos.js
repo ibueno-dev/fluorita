@@ -1,11 +1,33 @@
-// js/gerenciar_produtos.js
 document.addEventListener('DOMContentLoaded', () => {
+    // --- ELEMENTOS DO DOM ---
     const tabelaCorpo = document.getElementById('tabela-corpo');
     const searchInput = document.getElementById('searchInput');
     const paginacaoControles = document.getElementById('paginacao-controles');
 
+    // --- CACHE DE DADOS ---
+    let todasCategorias = []; // Armazena a lista de categorias para não buscar toda hora
+
     /**
-     * Busca produtos da API com base na página e termo de busca e renderiza tudo.
+     * Função inicial que busca dados essenciais (como categorias) e depois carrega os produtos.
+     */
+    const carregarDadosIniciais = async () => {
+        try {
+            const categoriasResponse = await fetch('../api/categorias_listar.php');
+            const categoriasData = await categoriasResponse.json();
+            if (categoriasData.sucesso) {
+                todasCategorias = categoriasData.categorias;
+            } else {
+                throw new Error('Falha ao carregar categorias');
+            }
+            // Após carregar as categorias, carrega a primeira página de produtos
+            await carregarProdutos(1, '');
+        } catch (error) {
+            tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Erro crítico ao carregar dados iniciais. Verifique a API de categorias.</td></tr>`;
+        }
+    };
+
+    /**
+     * Busca uma página de produtos da API e renderiza a tabela e a paginação.
      * @param {number} page - O número da página a ser buscada.
      * @param {string} search - O termo de busca.
      */
@@ -14,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(`../api/produtos_listar.php?page=${page}&search=${search}`);
             const data = await response.json();
-
             if (data.sucesso) {
                 renderizarTabela(data.produtos);
                 renderizarPaginacao(data.paginacao);
@@ -22,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Erro: ${data.erro}</td></tr>`;
             }
         } catch (error) {
-            tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Erro de conexão.</td></tr>`;
+            tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Erro de conexão com a API de produtos.</td></tr>`;
         }
     };
 
@@ -36,23 +57,43 @@ document.addEventListener('DOMContentLoaded', () => {
             tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center">Nenhum produto encontrado.</td></tr>`;
             return;
         }
+
+        const optionsHTML = todasCategorias.map(cat => `<option value="${cat.id}">${cat.nome}</option>`).join('');
+
         produtos.forEach(produto => {
             const tr = document.createElement('tr');
             tr.dataset.id = produto.id;
-            tr.classList.add('view-mode'); //aqui esta engasgando
+            tr.classList.add('view-mode');
             tr.innerHTML = `
                 <td>${produto.id}</td>
-                <td><img src="../${produto.imagem_thumb_url}" alt="${produto.nome}" class="thumb-preview" title="Clique para alterar"></td>
-                <td><span class="data-span">${produto.nome}</span><input type="text" class="form-control" value="${produto.nome}"></td>
-                <td><span class="data-span data-categoria">${produto.nome_categoria || 'N/A'}</span></td>
-                <td><span class="data-span">R$ ${parseFloat(produto.preco).toFixed(2)}</span><input type="number" step="0.01" class="form-control" value="${produto.preco}"></td>
-                <td><span class="data-span">${produto.disponivel == 1 ? 'Sim' : 'Não'}</span><input type="checkbox" class="form-check-input" ${produto.disponivel == 1 ? 'checked' : ''}></td>
+                <td>
+                    <img src="../${produto.imagem_thumb_url}" alt="${produto.nome}" class="thumb-preview" title="Clique para alterar a imagem">
+                    <input type="file" class="form-control form-control-sm" style="display: none;" accept="image/*">
+                </td>
+                <td>
+                    <span class="data-span data-nome">${produto.nome}</span>
+                    <input type="text" class="form-control form-control-sm" value="${produto.nome}">
+                </td>
+                <td>
+                    <span class="data-span data-categoria">${produto.nome_categoria || 'N/A'}</span>
+                    <select class="form-select form-select-sm">${optionsHTML}</select>
+                </td>
+                <td>
+                    <span class="data-span data-preco">R$ ${parseFloat(produto.preco).toFixed(2)}</span>
+                    <input type="number" step="0.01" class="form-control form-control-sm" value="${produto.preco}">
+                </td>
+                <td>
+                    <span class="data-span data-ativo">${produto.disponivel == 1 ? 'Sim' : 'Não'}</span>
+                    <input type="checkbox" class="form-check-input" ${produto.disponivel == 1 ? 'checked' : ''}>
+                </td>
                 <td class="text-end">
                     <button class="btn btn-primary btn-sm btn-editar">Editar</button>
                     <button class="btn btn-danger btn-sm btn-deletar">Deletar</button>
                     <button class="btn btn-success btn-sm btn-salvar" style="display: none;">Salvar</button>
                     <button class="btn btn-secondary btn-sm btn-cancelar" style="display: none;">Cancelar</button>
                 </td>`;
+            
+            tr.querySelector('select').value = produto.id_categoria;
             tabelaCorpo.appendChild(tr);
         });
     };
@@ -68,29 +109,22 @@ document.addEventListener('DOMContentLoaded', () => {
         let ul = document.createElement('ul');
         ul.className = 'pagination justify-content-center';
 
-        // Botão "Anterior"
-        let liPrev = `<li class="page-item ${paginacao.pagina_atual === 1 ? 'disabled' : ''}">
-                        <a class="page-link" href="#" data-page="${paginacao.pagina_atual - 1}">Anterior</a>
+        const criarLink = (texto, pagina, desabilitado = false, ativo = false) => {
+            const liClass = `page-item ${desabilitado ? 'disabled' : ''} ${ativo ? 'active' : ''}`;
+            return `<li class="${liClass}">
+                        <a class="page-link" href="#" data-page="${pagina}">${texto}</a>
                       </li>`;
-        ul.innerHTML += liPrev;
+        };
 
-        // Botões das páginas
+        ul.innerHTML += criarLink('Anterior', paginacao.pagina_atual - 1, paginacao.pagina_atual === 1);
         for (let i = 1; i <= paginacao.total_paginas; i++) {
-            let li = `<li class="page-item ${i === paginacao.pagina_atual ? 'active' : ''}">
-                        <a class="page-link" href="#" data-page="${i}">${i}</a>
-                      </li>`;
-            ul.innerHTML += li;
+            ul.innerHTML += criarLink(i, i, false, i === paginacao.pagina_atual);
         }
-
-        // Botão "Próximo"
-        let liNext = `<li class="page-item ${paginacao.pagina_atual === paginacao.total_paginas ? 'disabled' : ''}">
-                        <a class="page-link" href="#" data-page="${paginacao.pagina_atual + 1}">Próximo</a>
-                      </li>`;
-        ul.innerHTML += liNext;
-
+        ul.innerHTML += criarLink('Próximo', paginacao.pagina_atual + 1, paginacao.pagina_atual === paginacao.total_paginas);
+        
         paginacaoControles.appendChild(ul);
     };
-    
+
     // --- EVENT LISTENERS ---
 
     // Busca quando o usuário digita
@@ -99,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
             carregarProdutos(1, searchInput.value);
-        }, 300); // Espera 300ms após o usuário parar de digitar
+        }, 300);
     });
 
     // Cliques nos botões de paginação
@@ -113,12 +147,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Delegação de eventos para os botões e imagens
+    // Delegação de eventos para a tabela inteira
     tabelaCorpo.addEventListener('click', async (e) => {
         const tr = e.target.closest('tr');
         if (!tr) return;
-        const id = tr.dataset.id;
 
+        const id = tr.dataset.id;
+        const spans = tr.querySelectorAll('.data-span');
+        const inputs = tr.querySelectorAll('.form-control, .form-select, .form-check-input');
+        
         // Botão Editar
         if (e.target.classList.contains('btn-editar')) {
             tr.classList.replace('view-mode', 'edit-mode');
@@ -127,16 +164,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Botão Cancelar
         if (e.target.classList.contains('btn-cancelar')) {
             tr.classList.replace('edit-mode', 'view-mode');
-            // Resetar inputs para valores originais (opcional, pode recarregar a linha)
         }
 
         // Botão Salvar
         if (e.target.classList.contains('btn-salvar')) {
             const formData = new FormData();
             formData.append('id', id);
-            formData.append('nome', tr.querySelector('.inline-edit[type="text"]').value);
-            formData.append('preco', tr.querySelector('.inline-edit[type="number"]').value);
-            formData.append('disponivel', tr.querySelector('.form-check-input').checked ? 1 : 0);
+            formData.append('nome', tr.querySelector('input[type="text"]').value);
+            formData.append('preco', tr.querySelector('input[type="number"]').value);
+            formData.append('id_categoria', tr.querySelector('select').value);
+            formData.append('disponivel', tr.querySelector('input[type="checkbox"]').checked ? 1 : 0);
             formData.append('imagem_antiga', tr.querySelector('.thumb-preview').src.split('/').pop());
             
             const fileInput = tr.querySelector('input[type="file"]');
@@ -145,14 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                const response = await fetch('../api/produto_atualizar.php', {
-                    method: 'POST',
-                    body: formData
-                });
+                const response = await fetch('../api/produto_atualizar.php', { method: 'POST', body: formData });
                 const result = await response.json();
                 if (result.sucesso) {
                     alert('Produto salvo com sucesso!');
-                    carregarProdutos(); // Recarrega a tabela
+                    carregarProdutos(parseInt(document.querySelector('.pagination .active a')?.dataset.page || 1, 10), searchInput.value);
                 } else {
                     alert('Erro ao salvar: ' + result.erro);
                 }
@@ -163,18 +197,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Botão Deletar
         if (e.target.classList.contains('btn-deletar')) {
-            if (confirm(`Tem certeza que deseja deletar o produto ID ${id}?`)) {
+            const nome = tr.querySelector('.data-nome').textContent;
+            if (confirm(`Tem certeza que deseja deletar o produto "${nome}"?`)) {
                 const formData = new FormData();
                 formData.append('id', id);
                 try {
-                    const response = await fetch('../api/produto_deletar.php', {
-                        method: 'POST',
-                        body: formData
-                    });
+                    const response = await fetch('../api/produto_deletar.php', { method: 'POST', body: formData });
                     const result = await response.json();
-                     if (result.sucesso) {
+                    if (result.sucesso) {
                         alert('Produto deletado!');
-                        tr.remove(); // Remove a linha da tabela
+                        tr.remove();
                     } else {
                         alert('Erro ao deletar: ' + result.erro);
                     }
@@ -186,18 +218,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Clicar na imagem para abrir o seletor de arquivo
         if(e.target.classList.contains('thumb-preview')) {
-            // Só funciona em modo de edição
             if(tr.classList.contains('edit-mode')) {
                 const fileInput = tr.querySelector('input[type="file"]');
-                fileInput.click(); // Aciona o clique no input de arquivo escondido
-
+                fileInput.click();
                 fileInput.onchange = () => {
                     if (fileInput.files.length > 0) {
-                        // Exibe preview da nova imagem
                         const reader = new FileReader();
-                        reader.onload = (event) => {
-                            e.target.src = event.target.result;
-                        };
+                        reader.onload = (event) => { e.target.src = event.target.result; };
                         reader.readAsDataURL(fileInput.files[0]);
                     }
                 };
@@ -205,13 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Filtro de busca
-    searchInput.addEventListener('keyup', () => {
-        const termo = searchInput.value.toLowerCase();
-        const produtosFiltrados = todosProdutos.filter(p => p.nome.toLowerCase().includes(termo));
-        renderizarTabela(produtosFiltrados);
-    });
-
-    // Carregamento inicial
-    carregarProdutos();
+    // --- CARREGAMENTO INICIAL ---
+    carregarDadosIniciais();
 });
