@@ -27,7 +27,7 @@
                                 <th>ID</th>
                                 <th>Imagem</th>
                                 <th>Nome</th>
-                                <th>Preço</th>
+                                <th>Categoria</th> <th>Preço</th>
                                 <th>Ativo</th>
                                 <th class="text-end">Ações</th>
                             </tr>
