@@ -7,7 +7,11 @@ require_once dirname(__DIR__) . '/includes/conn.php';
 
 try {
     $conn = getDbConnection();
-    $sql = "SELECT id, nome, preco, descricao, disponivel, imagem FROM produtos ORDER BY id ASC";
+    // Query atualizada com LEFT JOIN para buscar o nome da categoria
+    $sql = "SELECT p.id, p.nome, p.preco, p.descricao, p.disponivel, p.imagem, c.nome AS nome_categoria
+            FROM produtos p
+            LEFT JOIN categorias c ON p.id_categoria = c.id
+            ORDER BY p.id ASC";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     $result = $stmt->get_result();
