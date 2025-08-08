@@ -37,6 +37,7 @@
                         </tbody>
                     </table>
                 </div>
+                <nav id="paginacao-controles" aria-label="Navegação das páginas de produtos"></nav>
             </div>
         </div>
     </div>
