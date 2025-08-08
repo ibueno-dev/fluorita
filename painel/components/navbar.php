@@ -22,6 +22,9 @@ $user_email = $_SESSION['usuario_email'] ?? 'Usuário';
                         <li><a class="dropdown-item" href="produtos_cadastrar.php">Cadastrar Novo</a></li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="categorias_gerenciar.php">Categorias</a>
+                </li>
             </ul>
             <div class="d-flex">
                  <span class="navbar-text me-3">
