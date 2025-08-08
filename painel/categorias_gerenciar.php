@@ -1,24 +1,7 @@
 <?php
 // painel/categorias_gerenciar.php
-
+// A única lógica PHP necessária é o nosso guardião de segurança.
 require_once dirname(__DIR__) . '/includes/auth_check.php';
-require_once dirname(__DIR__) . '/includes/conn.php';
-
-// Busca todas as categorias existentes para listar na tabela
-$categorias = [];
-try {
-    $conn = getDbConnection();
-    $stmt = $conn->prepare("SELECT id, nome FROM categorias ORDER BY nome ASC");
-    $stmt->execute();
-    $result = $stmt->get_result();
-    while ($row = $result->fetch_assoc()) {
-        $categorias[] = $row;
-    }
-} catch (Exception $e) {
-    // Em caso de erro, podemos registrar no log
-    error_log("Erro ao buscar categorias: " . $e->getMessage());
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -28,38 +11,19 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/painel.css">
-</head>
+    <link rel="stylesheet" href="../css/painel_tabela.css"> </head>
 <body>
     <?php include 'components/navbar.php'; ?>
     
     <main class="container mt-4">
         <h2>Gerenciar Categorias de Produtos</h2>
-
-        <?php
-            // Exibe mensagens de sucesso ou erro vindas do script de salvamento
-            if (isset($_GET['status'])) {
-                $status = $_GET['status'];
-                $msg = $_GET['msg'] ?? '';
-                if ($status === 'sucesso') {
-                    echo '<div class="alert alert-success">Categoria salva com sucesso!</div>';
-                } else if ($status === 'erro') {
-                    $mensagem_erro = 'Ocorreu um erro.';
-                    if ($msg === 'duplicado') {
-                        $mensagem_erro = 'Erro: Esta categoria já existe.';
-                    } elseif ($msg === 'vazio') {
-                         $mensagem_erro = 'Erro: O nome da categoria não pode ser vazio.';
-                    }
-                    echo '<div class="alert alert-danger">' . $mensagem_erro . '</div>';
-                }
-            }
-        ?>
-
-        <div class="row">
-            <div class="col-md-4">
+        
+        <div id="alert-placeholder"></div> <div class="row">
+            <div class="col-md-4 mb-4">
                 <div class="card bg-dark text-white border-secondary">
                     <div class="card-header">Adicionar Nova Categoria</div>
                     <div class="card-body">
-                        <form action="categoria_salvar.php" method="POST">
+                        <form id="form-add-categoria">
                             <div class="mb-3">
                                 <label for="nome_categoria" class="form-label">Nome da Categoria</label>
                                 <input type="text" class="form-control" id="nome_categoria" name="nome_categoria" required>
@@ -82,26 +46,10 @@ try {
                                     <th class="text-end">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php if (empty($categorias)): ?>
-                                    <tr><td colspan="3" class="text-center">Nenhuma categoria cadastrada.</td></tr>
-                                <?php else: ?>
-                                    <?php foreach ($categorias as $categoria): ?>
-                                    <tr data-id="<?php echo $categoria['id']; ?>">
-                                        <td><?php echo $categoria['id']; ?></td>
-                                        <td>
-                                            <span class="nome-categoria"><?php echo htmlspecialchars($categoria['nome']); ?></span>
-                                            <input type="text" class="form-control" value="<?php echo htmlspecialchars($categoria['nome']); ?>" style="display: none;">
-                                        </td>
-                                        <td class="text-end">
-                                            <button class="btn btn-sm btn-warning btn-editar">Editar</button>
-                                            <button class="btn btn-sm btn-danger btn-deletar">Excluir</button>
-                                            <button class="btn btn-sm btn-success btn-salvar" style="display: none;">Salvar</button>
-                                            <button class="btn btn-sm btn-secondary btn-cancelar" style="display: none;">Cancelar</button>
-                                        </td>
-                                    </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
+                            <tbody id="tabela-categorias-corpo">
+                                <tr>
+                                    <td colspan="3" class="text-center">Carregando...</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -109,7 +57,7 @@ try {
             </div>
         </div>
     </main>
-    <script src="../js/gerenciar_categorias.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/gerenciar_categorias.js"></script>
 </body>
 </html>
