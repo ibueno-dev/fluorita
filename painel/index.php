@@ -44,12 +44,12 @@ $email_do_usuario = htmlspecialchars($_SESSION['usuario_email']);
             </div>
             <div class="col-md-6 mb-4">
                 <div class="card bg-dark text-white border-secondary h-100">
-                    <div class="card-body text-center">
-                        <i class="bi bi-people-fill" style="font-size: 3rem;"></i>
-                        <h5 class="card-title mt-3">Gerenciar Usuários</h5>
-                        <p class="card-text">Visualize e gerencie os usuários do sistema. (Em breve)</p>
-                        <a href="#" class="btn btn-secondary disabled">Ir para Usuários</a>
-                    </div>
+                   <div class="card-body text-center">
+                       <i class="bi bi-people-fill" style="font-size: 3rem;"></i>
+                       <h5 class="card-title mt-3">Gerenciar Usuários</h5>
+                       <p class="card-text">Altere os níveis de acesso dos usuários cadastrados.</p>
+                       <a href="usuarios_gerenciar.php" class="btn btn-primary">Ir para Usuários</a>
+                   </div>
                 </div>
             </div>
         </div>
