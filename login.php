@@ -35,7 +35,7 @@ require_once __DIR__ . '/includes/auth_handler.php';
                 }
             ?>
 
-            <form method="POST" action="login.php">
+            <form method="POST" action="includes/auth_handler.php">
                 <div class="input-group mb-3">
                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                     <input type="email" class="form-control" name="email" placeholder="E-mail" required>
