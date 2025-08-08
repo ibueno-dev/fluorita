@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $senha_digitada = $_POST['senha'] ?? '';
 
     // Prepara a consulta para buscar o usuário pelo e-mail (previne SQL Injection).
-    $sql = "SELECT id, email, senha FROM login WHERE email = ?";
+    $sql = "SELECT id, email, senha FROM usuarios WHERE email = ?";
     $stmt = $conn->prepare($sql);
 
     if ($stmt) {
