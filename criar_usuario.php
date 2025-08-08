@@ -23,7 +23,7 @@ echo "[OK] Conexão com o banco de dados estabelecida.\n";
 
 try {
     // --- PASSO 1: VERIFICAR SE O USUÁRIO JÁ EXISTE ---
-    $sql_check = "SELECT id FROM login WHERE email = ?";
+    $sql_check = "SELECT id FROM usuarios WHERE email = ?";
     $stmt_check = $conn->prepare($sql_check);
     $stmt_check->bind_param("s", $email_padrao);
     $stmt_check->execute();
@@ -42,7 +42,7 @@ try {
         echo "[OK] Senha '1234' criptografada com sucesso.\n";
 
         // Prepara o comando SQL para inserir o novo usuário
-        $sql_insert = "INSERT INTO login (email, senha) VALUES (?, ?)";
+        $sql_insert = "INSERT INTO usuarios (email, senha) VALUES (?, ?)";
         $stmt_insert = $conn->prepare($sql_insert);
         $stmt_insert->bind_param("ss", $email_padrao, $hash_da_senha);
         
