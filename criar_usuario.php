@@ -8,8 +8,11 @@
  */
 
 // Define as credenciais do usuário padrão
+$nome_padrao = 'Usuário Padrão';
+$celular_padrao = '11999999999';
 $email_padrao = 'email@email.com';
 $senha_pura_padrao = '1234';
+$papel_padrao = '2'; // Define o papel padrão como 'admin' para o usuário criado
 
 // Usa uma formatação mais legível para a saída no navegador
 header('Content-Type: text/plain; charset=utf-8');
@@ -42,9 +45,15 @@ try {
         echo "[OK] Senha '1234' criptografada com sucesso.\n";
 
         // Prepara o comando SQL para inserir o novo usuário
-        $sql_insert = "INSERT INTO usuarios (email, senha) VALUES (?, ?)";
+        $sql_insert = "INSERT INTO usuarios (nome, celular, email, senha, id_papel) VALUES (?, ?, ?, ?, ?)";
         $stmt_insert = $conn->prepare($sql_insert);
-        $stmt_insert->bind_param("ss", $email_padrao, $hash_da_senha);
+        $stmt_insert->bind_param("ssssi",
+                $nome_padrao,
+                $celular_padrao,                 
+                $email_padrao,
+                $hash_da_senha,
+                $papel_padrao
+                );
         
         // Executa a inserção e verifica o resultado
         if ($stmt_insert->execute()) {
