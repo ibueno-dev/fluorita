@@ -6,7 +6,9 @@ require_once dirname(__DIR__) . '/includes/image_handler.php'; // Nosso novo mó
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { die("Acesso negado."); }
 
+// Coleta todos os dados, incluindo o novo campo id_categoria
 $nome = $_POST['nome'];
+$id_categoria = $_POST['id_categoria']; // <-- NOVO
 $preco = $_POST['preco'];
 $descricao = $_POST['descricao'];
 $disponivel = isset($_POST['disponivel']) ? 1 : 0;
@@ -23,12 +25,14 @@ if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
 
 try {
     $conn = getDbConnection();
-    $sql = "INSERT INTO produtos (nome, preco, descricao, disponivel, imagem) VALUES (?, ?, ?, ?, ?)";
+    // Adiciona id_categoria na query SQL
+    $sql = "INSERT INTO produtos (id_categoria, nome, preco, descricao, disponivel, imagem) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sdsis", $nome, $preco, $descricao, $disponivel, $nome_imagem_db);
+    // Adiciona o tipo 'i' para id_categoria e a variável no bind_param
+    $stmt->bind_param("isdsis", $id_categoria, $nome, $preco, $descricao, $disponivel, $nome_imagem_db);
     $stmt->execute();
 
-    header("Location: index.php?status=sucesso");
+    header("Location: produtos_listar.php?status=sucesso"); // Redireciona para a lista
     exit;
 } catch (Exception $e) {
     error_log("Erro ao salvar produto: " . $e->getMessage());
