@@ -2,64 +2,116 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tabelaCorpo = document.getElementById('tabela-corpo');
     const searchInput = document.getElementById('searchInput');
-    let todosProdutos = []; // Cache dos produtos para busca no lado do cliente
+    const paginacaoControles = document.getElementById('paginacao-controles');
 
-    const carregarProdutos = async () => {
+    /**
+     * Busca produtos da API com base na página e termo de busca e renderiza tudo.
+     * @param {number} page - O número da página a ser buscada.
+     * @param {string} search - O termo de busca.
+     */
+    const carregarProdutos = async (page = 1, search = '') => {
+        tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center">Carregando...</td></tr>`;
         try {
-            const response = await fetch('../api/produtos_listar.php');
+            const response = await fetch(`../api/produtos_listar.php?page=${page}&search=${search}`);
             const data = await response.json();
 
             if (data.sucesso) {
-                todosProdutos = data.produtos;
-                renderizarTabela(todosProdutos);
+                renderizarTabela(data.produtos);
+                renderizarPaginacao(data.paginacao);
             } else {
-                tabelaCorpo.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Erro ao carregar produtos: ${data.erro}</td></tr>`;
+                tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Erro: ${data.erro}</td></tr>`;
             }
         } catch (error) {
-            tabelaCorpo.innerHTML = `<tr><td colspan="6" class="text-center text-danger">Erro de conexão com a API.</td></tr>`;
+            tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Erro de conexão.</td></tr>`;
         }
     };
 
+    /**
+     * Preenche a tabela com os dados dos produtos.
+     * @param {Array} produtos 
+     */
     const renderizarTabela = (produtos) => {
         tabelaCorpo.innerHTML = '';
         if (produtos.length === 0) {
-            tabelaCorpo.innerHTML = `<tr><td colspan="6" class="text-center">Nenhum produto encontrado.</td></tr>`;
+            tabelaCorpo.innerHTML = `<tr><td colspan="7" class="text-center">Nenhum produto encontrado.</td></tr>`;
             return;
         }
-
         produtos.forEach(produto => {
             const tr = document.createElement('tr');
-            tr.setAttribute('data-id', produto.id);
-            tr.classList.add('view-mode'); // Inicia em modo de visualização
-
-            // Atualize o innerHTML para incluir a nova célula de Categoria
+            tr.dataset.id = produto.id;
+            tr.classList.add('view-mode');
             tr.innerHTML = `
                 <td>${produto.id}</td>
-                <td>
-                    <img src="../${produto.imagem_thumb_url}" alt="${produto.nome}" class="thumb-preview" title="Clique para alterar a imagem">
-                    <input type="file" class="form-control form-control-sm" style="display: none;" accept="image/*">
-                </td>
-                <td>
-                    <span class="data-span data-nome">${produto.nome}</span>
-                    <input type="text" class="form-control form-control-sm inline-edit" value="${produto.nome}">
-                </td>
-                <td>
-                    <span class="data-span data-categoria">${produto.nome_categoria || 'N/A'}</span>
-                    </td>
-                <td>
-                    <span class="data-span data-preco">R$ ${parseFloat(produto.preco).toFixed(2)}</span>
-                    <input type="number" step="0.01" class="form-control form-control-sm inline-edit" value="${produto.preco}">
-                </td>
-                <td>
-                    <span class="data-span data-ativo">${produto.disponivel == 1 ? 'Sim' : 'Não'}</span>
-                    <input type="checkbox" class="form-check-input" ${produto.disponivel == 1 ? 'checked' : ''}>
-                </td>
+                <td><img src="../${produto.imagem_thumb_url}" alt="${produto.nome}" class="thumb-preview" title="Clique para alterar"></td>
+                <td><span class="data-span">${produto.nome}</span><input type="text" class="form-control" value="${produto.nome}"></td>
+                <td><span class="data-span">${produto.nome_categoria || 'N/A'}</span></td>
+                <td><span class="data-span">R$ ${parseFloat(produto.preco).toFixed(2)}</span><input type="number" step="0.01" class="form-control" value="${produto.preco}"></td>
+                <td><span class="data-span">${produto.disponivel == 1 ? 'Sim' : 'Não'}</span><input type="checkbox" class="form-check-input" ${produto.disponivel == 1 ? 'checked' : ''}></td>
                 <td class="text-end">
-                    </td>
-            `;
+                    <button class="btn btn-primary btn-sm btn-editar">Editar</button>
+                    <button class="btn btn-danger btn-sm btn-deletar">Deletar</button>
+                    <button class="btn btn-success btn-sm btn-salvar" style="display: none;">Salvar</button>
+                    <button class="btn btn-secondary btn-sm btn-cancelar" style="display: none;">Cancelar</button>
+                </td>`;
             tabelaCorpo.appendChild(tr);
         });
     };
+
+    /**
+     * Cria os botões de navegação da paginação.
+     * @param {object} paginacao - O objeto com dados da paginação da API.
+     */
+    const renderizarPaginacao = (paginacao) => {
+        paginacaoControles.innerHTML = '';
+        if (paginacao.total_paginas <= 1) return;
+
+        let ul = document.createElement('ul');
+        ul.className = 'pagination justify-content-center';
+
+        // Botão "Anterior"
+        let liPrev = `<li class="page-item ${paginacao.pagina_atual === 1 ? 'disabled' : ''}">
+                        <a class="page-link" href="#" data-page="${paginacao.pagina_atual - 1}">Anterior</a>
+                      </li>`;
+        ul.innerHTML += liPrev;
+
+        // Botões das páginas
+        for (let i = 1; i <= paginacao.total_paginas; i++) {
+            let li = `<li class="page-item ${i === paginacao.pagina_atual ? 'active' : ''}">
+                        <a class="page-link" href="#" data-page="${i}">${i}</a>
+                      </li>`;
+            ul.innerHTML += li;
+        }
+
+        // Botão "Próximo"
+        let liNext = `<li class="page-item ${paginacao.pagina_atual === paginacao.total_paginas ? 'disabled' : ''}">
+                        <a class="page-link" href="#" data-page="${paginacao.pagina_atual + 1}">Próximo</a>
+                      </li>`;
+        ul.innerHTML += liNext;
+
+        paginacaoControles.appendChild(ul);
+    };
+    
+    // --- EVENT LISTENERS ---
+
+    // Busca quando o usuário digita
+    let searchTimeout;
+    searchInput.addEventListener('keyup', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            carregarProdutos(1, searchInput.value);
+        }, 300); // Espera 300ms após o usuário parar de digitar
+    });
+
+    // Cliques nos botões de paginação
+    paginacaoControles.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (e.target.tagName === 'A' && e.target.dataset.page) {
+            const page = parseInt(e.target.dataset.page, 10);
+            if (!isNaN(page)) {
+                carregarProdutos(page, searchInput.value);
+            }
+        }
+    });
 
     // Delegação de eventos para os botões e imagens
     tabelaCorpo.addEventListener('click', async (e) => {
