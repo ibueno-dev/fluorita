@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tr.setAttribute('data-id', produto.id);
             tr.classList.add('view-mode'); // Inicia em modo de visualização
 
+            // Atualize o innerHTML para incluir a nova célula de Categoria
             tr.innerHTML = `
                 <td>${produto.id}</td>
                 <td>
@@ -43,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="text" class="form-control form-control-sm inline-edit" value="${produto.nome}">
                 </td>
                 <td>
+                    <span class="data-span data-categoria">${produto.nome_categoria || 'N/A'}</span>
+                    </td>
+                <td>
                     <span class="data-span data-preco">R$ ${parseFloat(produto.preco).toFixed(2)}</span>
                     <input type="number" step="0.01" class="form-control form-control-sm inline-edit" value="${produto.preco}">
                 </td>
@@ -51,11 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="checkbox" class="form-check-input" ${produto.disponivel == 1 ? 'checked' : ''}>
                 </td>
                 <td class="text-end">
-                    <button class="btn btn-primary btn-sm btn-editar">Editar</button>
-                    <button class="btn btn-danger btn-sm btn-deletar">Deletar</button>
-                    <button class="btn btn-success btn-sm btn-salvar">Salvar</button>
-                    <button class="btn btn-secondary btn-sm btn-cancelar">Cancelar</button>
-                </td>
+                    </td>
             `;
             tabelaCorpo.appendChild(tr);
         });
