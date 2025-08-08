@@ -22,8 +22,14 @@
                                 <?php echo htmlspecialchars($_SESSION['usuario_email']); ?>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark">
-                                <li><a class="dropdown-item" href="painel/index.php">Meu Painel</a></li>
-                                <li><hr class="dropdown-divider"></li>
+                                <?php
+                                // ----- NOVA VERIFICAÇÃO AQUI -----
+                                // Mostra o link do painel APENAS se o papel for Administrador (ID = 2)
+                                if (isset($_SESSION['usuario_papel']) && $_SESSION['usuario_papel'] == 2):
+                                ?>
+                                    <li><a class="dropdown-item" href="painel/index.php">Meu Painel</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                <?php endif; ?>
                                 <li><a class="dropdown-item" href="logout.php">Sair</a></li>
                             </ul>
                         </li>
