@@ -26,7 +26,14 @@ require_once __DIR__ . '/includes/auth_handler.php';
     <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
         <div class="login-card">
             
-            <?php if (!empty($mensagem)) echo $mensagem; ?>
+           <?php
+                // Exibe a mensagem de erro de login, se houver uma na sessão.
+                if (isset($_SESSION['login_error_message'])) {
+                    echo '<div class="alert alert-danger" role="alert">' . $_SESSION['login_error_message'] . '</div>';
+                    // Limpa a mensagem da sessão para que não apareça novamente.
+                    unset($_SESSION['login_error_message']);
+                }
+            ?>
 
             <form method="POST" action="login.php">
                 <div class="input-group mb-3">
